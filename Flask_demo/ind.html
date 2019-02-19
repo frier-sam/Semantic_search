@@ -1,0 +1,174 @@
+<head>
+<link href="bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class='container'>
+	<div class='col-12' >
+		<h1>Query input</h1>
+		<form action="/action_page.php">
+			Query: <input type="text" name="fname"><br>
+	
+		<input type="submit" value="Submit">
+		</form>
+	</div>
+	<div class='row'>
+		
+			<div class='col-md-4'>
+				<h4>Rule Based</h4>
+			</div>
+			<div class='col-md-4'>
+				<h4>Graph</h4>
+			</div>
+			<div class='col-md-4'>
+				<h4>h</h4>
+			</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+<script>
+function send(){
+	var msg = document.getElementById("msg").value;
+	//check if message is empty
+	if (msg == ''){
+		return;
+	}
+	sentmsg(msg); //insert the message
+	
+	document.getElementById('msg').value = '' //empty the input field
+	getresponse(msg)
+	
+	return;
+}
+
+//sent message appending function
+function updside(){
+	var prob = document.getElementById("prob");
+	var ent = document.getElementById("ent");
+	prob.innerHTML = problem;
+	ent.innerHTML = entity;
+
+}
+function sentmsg(msg){
+	var bfh = '<div class="col-8 offset-md-4 text-right"><div class="text-center "><p class="mesboxr">';
+	var afh = '</p></div></div>';
+	var tot = bfh + msg + afh;
+	var div = document.getElementById("messages");
+	div.innerHTML += bfh + msg + afh;
+	scrolldown()
+	return;
+}
+
+//received message apending fuction
+
+function recvmsg(msg){
+	var bfh = '<div class="col-8 text-left"><div><p class="text-center mesboxl">';
+	var afh = '</p></div></div>';
+	var tot = bfh + msg + afh;
+	var div = document.getElementById("messages");
+	div.innerHTML += bfh + msg + afh;
+	scrolldown();
+	return;
+}
+
+function scrolldown(){
+		var objDiv = document.getElementById("messages"); //scroll down to bottom
+		objDiv.scrollTop = objDiv.scrollHeight;
+}
+</script>
+<script>
+
+    
+problem = '';
+entity = '';
+function getresponse(msg){
+
+    $('.result').text("");
+	//var inputs = '{ "ent":"ee" , "prob":"pp" , "message" :"' + msg + '"}'
+    //inputs = getFormData(".inputs");
+    
+	var inputs = {};
+	inputs["message"]=msg || '';
+	inputs["prob"]=problem;
+	inputs["ent"]=entity;
+	
+    //jquery AJAX post
+    var url = "http://127.0.0.1:7000/hello"
+    var data = JSON.stringify(inputs)
+	//console.log(data);
+	//serializes json into a string, opposite of parse
+    $.post( url, data, function( data ) {
+		console.log(data);
+        response = data['results']['response'];
+        recvmsg(response);
+		problem = data['results']['problem'];
+		entity = data['results']['entity'];
+		updside();
+		//alert(sec);
+		
+		//$('.result').append(response)
+        });
+	
+    
+}
+
+
+//function getFormData(form){
+//    var json={};
+//    var array = $(form).serializeArray();
+//    $.each(array, function(){
+//       json[this.name]=this.value || '';
+//    });
+//    return json;
+//}
+//
+//
+
+</script>
+<!--<script src="flask/js/jquery.js"></script>
+<script src="flask/js/bootstrap.min.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    
+    
+    <!--raroc app -->
+    
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
