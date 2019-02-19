@@ -1,0 +1,272 @@
+<head>
+<link href="bootstrap.min.css" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  color: #efefef;
+}
+
+.flexbox-container {
+  background: teal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin: 0;
+  min-height: 100%;
+  
+}
+
+.flexbox-item {
+  background: gray;
+  border: 1px solid teal;
+  border-radius: 15px;	
+}
+
+
+.flexbox-item1 {
+  background: black;
+  border: 1px solid teal;
+  border-radius: 5px;	
+}
+.fixed1 {
+  flex: none;
+  width: 10%;
+}
+.demo {
+  width: 60%;
+  padding: 1em;
+  background: black;
+  height:10%;
+}
+
+
+
+@media screen and (min-width: 1650px){
+.fixed {
+  flex: none;
+  width: 40%;
+}
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1650px){
+.fixed {
+  flex: none;
+  width: 40%;
+}
+}
+@media screen and (min-width: 780px) and (max-width: 1280px){
+.fixed {
+  flex: none;
+  width: 50%;
+}
+}
+
+@media screen and (min-width: 540px) and (max-width: 780px) {
+.fixed {
+  flex: none;
+  width: 60%;
+}	
+}
+
+@media screen and (max-width: 240px) and (max-width: 540px) {
+    .fixed {
+  flex: none;
+  width: 80%;
+	
+	}
+}
+.demo {
+  width: 100%;
+  padding: 1em;
+  background: gray;
+  height:80%;
+}
+.mesboxr {
+	border: 1px solid teal;
+	border-radius: 15px;
+	background-color:#302f7d;
+	padding:5px;
+}
+.mesboxl {
+	border: 1px solid teal;
+	border-radius: 15px;
+	background-color:#252525;
+	padding:5px;
+}
+.chatarea { 
+    overflow-y:scroll; 
+    position:relative;
+    height: 90%;
+}
+</style>
+</head>
+<body>
+
+<div class="flexbox-container">
+  <div class="flexbox-item fixed">
+    <div class="demo text-center">
+		<h2>VchatBot Demo</h2>
+		<div class="col-12">
+			<div class="col-12" style="background-color:teal; height:80%;" >
+				<div>hi, welcome to the demo of chatbot.</div>
+				<div id = "messages" class="chatarea">
+					<!--<div class="col-8 text-right" style="margin-left: 33.333333%;"><div class="text-center "><p class="mesboxr">Hi</p></div></div>-->					
+				</div>
+			</div>
+		</div>
+		<form class="form-inline" style="padding-top:10px;" onsubmit="return false;">
+			<div class="form-group col-10">
+				<input type="text" class="form-control col-12" id="msg" placeholder="Enter message">
+			</div>
+			
+			<button type="submit" class="btn col-2" onclick="send()">Reply</button>
+		</form>
+    </div>
+  </div>
+  <div class="flexbox-item1 fixed1">
+	<div class="demo1	 text-center">
+		<p id="entity">category of service identified<br><strong id="ent"></strong></p><br>
+		<p id="problem">problem identified<br><strong id="prob"></strong></p>
+	</div>
+  </div>
+</div>
+<script>
+function send(){
+	var msg = document.getElementById("msg").value;
+	//check if message is empty
+	if (msg == ''){
+		return;
+	}
+	sentmsg(msg); //insert the message
+	
+	document.getElementById('msg').value = '' //empty the input field
+	getresponse(msg)
+	
+	return;
+}
+
+//sent message appending function
+function updside(){
+	var prob = document.getElementById("prob");
+	var ent = document.getElementById("ent");
+	prob.innerHTML = problem;
+	ent.innerHTML = entity;
+
+}
+function sentmsg(msg){
+	var bfh = '<div class="col-8 offset-md-4 text-right"><div class="text-center "><p class="mesboxr">';
+	var afh = '</p></div></div>';
+	var tot = bfh + msg + afh;
+	var div = document.getElementById("messages");
+	div.innerHTML += bfh + msg + afh;
+	scrolldown()
+	return;
+}
+
+//received message apending fuction
+
+function recvmsg(msg){
+	var bfh = '<div class="col-8 text-left"><div><p class="text-center mesboxl">';
+	var afh = '</p></div></div>';
+	var tot = bfh + msg + afh;
+	var div = document.getElementById("messages");
+	div.innerHTML += bfh + msg + afh;
+	scrolldown();
+	return;
+}
+
+function scrolldown(){
+		var objDiv = document.getElementById("messages"); //scroll down to bottom
+		objDiv.scrollTop = objDiv.scrollHeight;
+}
+</script>
+<script>
+
+    
+problem = '';
+entity = '';
+function getresponse(msg){
+
+    $('.result').text("");
+	//var inputs = '{ "ent":"ee" , "prob":"pp" , "message" :"' + msg + '"}'
+    //inputs = getFormData(".inputs");
+    
+	var inputs = {};
+	inputs["message"]=msg || '';
+	inputs["prob"]=problem;
+	inputs["ent"]=entity;
+	
+    //jquery AJAX post
+    var url = "http://127.0.0.1:7000/hello"
+    var data = JSON.stringify(inputs)
+	//console.log(data);
+	//serializes json into a string, opposite of parse
+    $.post( url, data, function( data ) {
+		console.log(data);
+        response = data['results']['response'];
+        recvmsg(response);
+		problem = data['results']['problem'];
+		entity = data['results']['entity'];
+		updside();
+		//alert(sec);
+		
+		//$('.result').append(response)
+        });
+	
+    
+}
+
+
+//function getFormData(form){
+//    var json={};
+//    var array = $(form).serializeArray();
+//    $.each(array, function(){
+//       json[this.name]=this.value || '';
+//    });
+//    return json;
+//}
+//
+//
+
+</script>
+<!--<script src="flask/js/jquery.js"></script>
+<script src="flask/js/bootstrap.min.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    
+    
+    <!--raroc app -->
+    
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
