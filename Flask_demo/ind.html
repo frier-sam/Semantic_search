@@ -1,34 +1,62 @@
 <head>
 <link href="bootstrap.min.css" rel="stylesheet">
+<style>
+.container {
+    height: 100vh;
+    overflow: auto;
+}
+.maincols {
+height:77%;
 
+}
+.heads {
+padding:5px;
+}
+.msgbox {
+height:30%;
+padding-top:2%%;
+background-color:#e5e8e7;
+border-radius( 5px );
+}
+</style>
 </head>
-<body>
-
-<div class='container'>
-	<div class='col-12' >
-		<h1>Query input</h1>
-		<form action="/action_page.php">
-			Query: <input type="text" name="fname"><br>
-	
-		<input type="submit" value="Submit">
-		</form>
-	</div>
-	<div class='row'>
+<body style="height:100%;">
+<div class="row">
+	<div class='col-10' style="height:100%; padding:0;">
+		<div class='col-12 text-center border-bottom' style="height:20%;">
+			<h1 >Query input</h1>
+			<form class=" text-center" action="/action_page.php" style="padding:15px;">
+				
+				<input class="form-control col-8 offset-2" type="text" name="fname" style="border: 5px solid #7ec7a5"><br>
 		
-			<div class='col-md-4'>
-				<h4>Rule Based</h4>
-			</div>
-			<div class='col-md-4'>
-				<h4>Graph</h4>
-			</div>
-			<div class='col-md-4'>
-				<h4>h</h4>
-			</div>
+				<input class="form-control col-4 offset-4"  type="submit" value="Submit" > <!--style="background-color:#e5e8e7;border: 5px solid #7ec7a5"-->
+			</form>
+		</div>
+		<div class='row text-center'>
+			
+				<div class='col-4 border-right maincols'>
+					<h4 class="heads"><strong>Rule Based</strong></h4><hr>
+					<div class="col-10 offset-1 msgbox">
+						<p class="heads"><strong>Parsed Query</strong></p>
+					</div><hr>
+					<h5>Result</h5>
+				</div>
+				<div class='col-4 maincols'>
+					<h4 class="heads"><strong>Graph</strong></h4><hr>
+				</div>
+				<div class='col-4 border-left maincols'>
+					<h4 class="heads"><strong>h</strong></h4><hr>
+				</div>
+		</div>
+		<div class="text-center" style="height:3%;background-color:#7ec7a5;"> 
+			<p>This Demo is created to showcase <strong>NLIDB</strong> architectures available at <strong>Virtusa Pvt Ltd</strong><p>
+		</div>
+
 	</div>
-
+	<div class='col-2 border-left text-center' style="height:100%; padding:0;">
+	<h4 class="heads">Misc</h4>
+	</div>
 </div>
-
-
 
 
 
