@@ -19,10 +19,12 @@ background-color:#e5e8e7;
 border-radius( 5px );
 }
 </style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 </head>
 <body style="height:100%;">
-<div class="row">
-	<div class='col-10' style="height:100%; padding:0;">
+<div class="row" style='height:97%;'>
+	<div class='col-6' style="height:100%; padding:0;">
 		<div class='col-12 text-center border-bottom' style="height:20%;">
 			<h1 >Query input</h1>
 			<form class=" text-center" action="/action_page.php" style="padding:15px;">
@@ -34,83 +36,151 @@ border-radius( 5px );
 		</div>
 		<div class='row text-center'>
 			
-				<div class='col-4 border-right maincols'>
+				<div class='col-6 border-right maincols'>
 					<h4 class="heads"><strong>Rule Based</strong></h4><hr>
 					<div class="col-10 offset-1 msgbox">
 						<p class="heads"><strong>Parsed Query</strong></p>
 					</div><hr>
 					<h5>Result</h5>
 				</div>
-				<div class='col-4 maincols'>
+				<div class='col-6 maincols'>
 					<h4 class="heads"><strong>Graph</strong></h4><hr>
 				</div>
-				<div class='col-4 border-left maincols'>
-					<h4 class="heads"><strong>h</strong></h4><hr>
-				</div>
 		</div>
-		<div class="text-center" style="height:3%;background-color:#7ec7a5;"> 
-			<p>This Demo is created to showcase <strong>NLIDB</strong> architectures available at <strong>Virtusa Pvt Ltd</strong><p>
-		</div>
+		
 
 	</div>
-	<div class='col-2 border-left text-center' style="height:100%; padding:0;">
-	<h4 class="heads">Misc</h4>
+	<div class='col-3 border-left' style='height:97%;'>
+		<h4 class="heads"><strong>Query Maker</strong></h4><hr><BR>
+		<p> Find the </p>
+			<select class="selectpicker form-control " multiple data-live-search="true" name='mm' id='mm'>
+			  <option value='payment'>salary</option>
+			  <option value='name'>employee name</option>
+			  <option value='id'>employee id</option>
+			  <option value='date'>payment date</option>
+			  <option value='nickname'>short name</option>
+			  <option value='phone'>phone</option>
+			</select>
+			
+			<hr>
+		
+		<button type="button" class="btn col-6 offset-3" name='add' id='add' onclick='add()'>Add Clause</button>
+		<p style='margin:15px;'> Where  </p>
+		<div name='clause' class='row' id='clause'>
+			
+
+			
+		
+		</div>
+		<button type="button" class="btn col-6 offset-3" name='sub' id='sub' onclick='rulesub()' style="margin-top:5">Submit</button>	
+	</div>
+	<div class='col-3 border-left text-center' style="height:100%; padding:0;">
+		<h4 class="heads">Misc</h4>
+		
+		
+		
 	</div>
 </div>
+<div class="text-center" style="height:3%;background-color:#7ec7a5;"> 
+			<p style="margin-top:0">This Demo is created to showcase <strong>NLIDB</strong> architectures available at <strong>Virtusa Pvt Ltd</strong><p>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script>
+	
+	b = 0;
+	function add(){
+		name = 'c' +b;
+		b=b+1;
+		//alert(name);
+		var container = document.createElement("div");
+		container.className = "col-4 ";
+		container.innerHTML = "<select class='form-control  ' data-live-search='true' "+ "id='" + name +"' onchange='addre(this)'><option disabled selected='selected'> selects </option><option value='payment'>salary</option><option value='name'>employee name</option><option value='id'>employee id</option><option value='date'>payment date</option><option value='nickname'>short name</option><option value='phone'>phone</option></select>";
+		document.getElementById("clause").appendChild(container); 
+	}
+	
+	
+	function addre(obj){
+		var id = obj.id;
+		//var val = obj.value;
+		var nid = id + 're';
+		var check = document.getElementById(nid);
+		if(check == null){
+			var container = document.createElement("div");
+			container.className = "col-4 ";
+			container.innerHTML = "<select class=' form-control  ' data-live-search='true' "+ "id='" + nid +"' onchange='addval(this)'><option disabled selected='selected'> selects </option><option value='='>Equals</option> <option value='BETWEEN'>Between/range</option> <option value='>'>Greater Than</option><option value='<'>Less Than</option><option value='>='>Greater Than or Equal To</option><option value='<='>Less Than or Equal To</option></select>" ;
+			document.getElementById("clause").appendChild(container); 
+		}
+		
+	}
+	
+	
+	function addval(obj){
+		//alert('working');
+		var id = obj.id;
+		var val = obj.value;
+		var nid = id + 'va'; 
+		var check = document.getElementById(nid);
+		if(check == null){
+			var container = document.createElement("div");
+			container.className = "col-4";
+			if (val == 'BETWEEN'){
+				container.innerHTML =" <input type='text' class='form-control col-6' id='"+ nid + "1" +"'><input type='text' class='form-control col-6' id='"+ nid + "2" +"'>";
+			}
+			else {
+				container.innerHTML =" <input type='text' class='form-control' id='"+ nid +"'>";
+			}
+			document.getElementById("clause").appendChild(container); 
+		}
+		else {
+			//if (val == 'BETWEEN'){
+			//	 document.getElementById(nid).innerHTML = " <input type='text' class='form-control col-6' id='"+ nid + "1" +"'><input type='text' class='form-control col-6' id='"+ nid + "2" +"'>";
+			//}
+			//else {
+			//	 document.getElementById(nid).innerHTML  =" <input type='text' class='form-control' id='"+ nid +"'>";
+			//}
+		}
+	}
+	
+	
+	function rulesub(){
+		var sel = [];	
+		for(i=0;i<b;i++){
+			sid = 'c' +i;
+			rid = sid + 're';
+			vid = rid + 'va';
+			//console.log(sid);
+			sel.push(document.getElementById(sid).value);	
+		}
+		//console.log(sel);
+		var ss = document.getElementById('mm').value;
+		console.log($('select').selectpicker());
+	}
+</script>
+
 
 
 
 
 <script>
-function send(){
-	var msg = document.getElementById("msg").value;
-	//check if message is empty
-	if (msg == ''){
-		return;
-	}
-	sentmsg(msg); //insert the message
-	
-	document.getElementById('msg').value = '' //empty the input field
-	getresponse(msg)
-	
-	return;
-}
+//$( document ).ready(function() {
+//  $('select').selectpicker();
+//});
+$('select').selectpicker();
 
-//sent message appending function
-function updside(){
-	var prob = document.getElementById("prob");
-	var ent = document.getElementById("ent");
-	prob.innerHTML = problem;
-	ent.innerHTML = entity;
 
-}
-function sentmsg(msg){
-	var bfh = '<div class="col-8 offset-md-4 text-right"><div class="text-center "><p class="mesboxr">';
-	var afh = '</p></div></div>';
-	var tot = bfh + msg + afh;
-	var div = document.getElementById("messages");
-	div.innerHTML += bfh + msg + afh;
-	scrolldown()
-	return;
-}
-
-//received message apending fuction
-
-function recvmsg(msg){
-	var bfh = '<div class="col-8 text-left"><div><p class="text-center mesboxl">';
-	var afh = '</p></div></div>';
-	var tot = bfh + msg + afh;
-	var div = document.getElementById("messages");
-	div.innerHTML += bfh + msg + afh;
-	scrolldown();
-	return;
-}
-
-function scrolldown(){
-		var objDiv = document.getElementById("messages"); //scroll down to bottom
-		objDiv.scrollTop = objDiv.scrollHeight;
-}
+//$('.selectpicker').change(function () {
+//    var selectedItem = [];
+//	selectedItem.push($(this).find("option:selected").val());
+//    console.log(selectedItem);
+//});
+$('.selectpicker').change(function (e) {
+    alert(e.target.value);
+});
 </script>
+
+
 <script>
 
     
@@ -123,8 +193,8 @@ function getresponse(msg){
     //inputs = getFormData(".inputs");
     
 	var inputs = {};
-	inputs["message"]=msg || '';
-	inputs["prob"]=problem;
+	inputs["sel"]=msg || '';
+	inputs["whe"]=problem;
 	inputs["ent"]=entity;
 	
     //jquery AJAX post
@@ -135,10 +205,10 @@ function getresponse(msg){
     $.post( url, data, function( data ) {
 		console.log(data);
         response = data['results']['response'];
-        recvmsg(response);
+        //recvmsg(response);
 		problem = data['results']['problem'];
 		entity = data['results']['entity'];
-		updside();
+		//updside();
 		//alert(sec);
 		
 		//$('.result').append(response)
@@ -162,9 +232,10 @@ function getresponse(msg){
 </script>
 <!--<script src="flask/js/jquery.js"></script>
 <script src="flask/js/bootstrap.min.js"></script>-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+	
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     
     
