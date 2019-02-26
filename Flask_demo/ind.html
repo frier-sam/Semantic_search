@@ -14,7 +14,7 @@ padding:5px;
 }
 .msgbox {
 height:30%;
-padding-top:2%%;
+padding-top:2%;
 background-color:#e5e8e7;
 border-radius( 5px );
 }
@@ -29,16 +29,16 @@ border-radius( 5px );
 			<h1 >Query input</h1>
 			<form class=" text-center" action="/action_page.php" style="padding:15px;">
 				
-				<input class="form-control col-8 offset-2" type="text" name="fname" style="border: 5px solid #7ec7a5"><br>
+				<input class="form-control col-8 offset-2" type="text" name='nlp' id='nlp' style="border: 5px solid #7ec7a5"><br>
 		
-				<input class="form-control col-4 offset-4"  type="submit" value="Submit" > <!--style="background-color:#e5e8e7;border: 5px solid #7ec7a5"-->
+				<button type="button" class="btn col-4" name='nlpbut' id='nlpbut' onclick='nlpsend()' style="margin-top:5">Submit</button>	 <!--style="background-color:#e5e8e7;border: 5px solid #7ec7a5"-->
 			</form>
 		</div>
 		<div class='row text-center'>
 			
 				<div class='col-6 border-right maincols'>
 					<h4 class="heads"><strong>Rule Based</strong></h4><hr>
-					<div class="col-10 offset-1 msgbox">
+					<div class="col-10 offset-1 msgbox" id='nlprule'>
 						<p class="heads"><strong>Parsed Query</strong></p>
 					</div><hr>
 					<h5>Result</h5>
@@ -73,6 +73,9 @@ border-radius( 5px );
 		
 		</div>
 		<button type="button" class="btn col-6 offset-3" name='sub' id='sub' onclick='rulesub()' style="margin-top:5">Submit</button>	
+		<div class="col-10 offset-1 msgbox text-center" style='margin-top:5px;height:20%' id='qmpq'>
+					<p class="heads"><strong>Parsed Query</strong></p>
+		</div>
 	</div>
 	<div class='col-3 border-left text-center' style="height:100%; padding:0;">
 		<h4 class="heads">Misc</h4>
@@ -87,6 +90,27 @@ border-radius( 5px );
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script>
+//$( document ).ready(function() {
+//  $('select').selectpicker();
+//});
+$('select').selectpicker();
+
+
+//$('.selectpicker').change(function () {
+//    var selectedItem = [];
+//	selectedItem.push($(this).find("option:selected").val());
+//    console.log(selectedItem);
+//});
+var sel = [];
+$('.selectpicker').on('change', function(){
+	var selected = []
+    selected = $('.selectpicker').val()
+	sel = selected;
+    //console.log(selected); //Get the multiple values selected in an array
+    //console.log(selected.length); //Length of the array
+});
+</script>
 <script>
 	
 	b = 0;
@@ -145,17 +169,28 @@ border-radius( 5px );
 	
 	
 	function rulesub(){
-		var sel = [];	
+		var whe = [[]];	
 		for(i=0;i<b;i++){
 			sid = 'c' +i;
 			rid = sid + 're';
 			vid = rid + 'va';
-			//console.log(sid);
-			sel.push(document.getElementById(sid).value);	
+			mainval = document.getElementById(sid).value;
+			var relstr;
+			relation = document.getElementById(rid).value;
+			if(relation=='BETWEEN'){
+				minv = vid + '1';
+				maxv = vid + '2';
+				relstr = relation  + ' ' +document.getElementById(minv).value +' ' + 'AND' +' ' + document.getElementById(maxv).value;
+			}
+			else{
+				relstr = relation +' '+ document.getElementById(vid).value;
+			}
+			whe[i] = [mainval,relstr]; 
 		}
+		
 		//console.log(sel);
-		var ss = document.getElementById('mm').value;
-		console.log($('select').selectpicker());
+		//console.log(whe);
+		getresponse(sel,whe);
 	}
 </script>
 
@@ -163,58 +198,48 @@ border-radius( 5px );
 
 
 
-<script>
-//$( document ).ready(function() {
-//  $('select').selectpicker();
-//});
-$('select').selectpicker();
 
-
-//$('.selectpicker').change(function () {
-//    var selectedItem = [];
-//	selectedItem.push($(this).find("option:selected").val());
-//    console.log(selectedItem);
-//});
-$('.selectpicker').change(function (e) {
-    alert(e.target.value);
-});
-</script>
 
 
 <script>
 
     
-problem = '';
-entity = '';
-function getresponse(msg){
 
-    $('.result').text("");
+function getresponse(sel,whe){
+
+    //$('.result').text("");
 	//var inputs = '{ "ent":"ee" , "prob":"pp" , "message" :"' + msg + '"}'
     //inputs = getFormData(".inputs");
     
 	var inputs = {};
-	inputs["sel"]=msg || '';
-	inputs["whe"]=problem;
-	inputs["ent"]=entity;
+	inputs["sel"]=sel;
+	inputs["whe"]=whe;
+	inputs["ent"]='';
 	
     //jquery AJAX post
-    var url = "http://127.0.0.1:7000/hello"
+    var url = "http://127.0.0.1:7000/querymaker"
     var data = JSON.stringify(inputs)
 	//console.log(data);
 	//serializes json into a string, opposite of parse
     $.post( url, data, function( data ) {
-		console.log(data);
-        response = data['results']['response'];
+		
+        response = data['results'];
+		console.log(response);
         //recvmsg(response);
-		problem = data['results']['problem'];
-		entity = data['results']['entity'];
+		//problem = data['results']['problem'];
+		//entity = data['results']['entity'];
 		//updside();
 		//alert(sec);
-		
+		//console.log(response);
 		//$('.result').append(response)
+		qmpqdis(response);
         });
 	
     
+}
+function qmpqdis(res){
+
+	document.getElementById('qmpq').innerHTML ='<p>Parsed Query</p><strong>'+ res+'</strong>';
 }
 
 
@@ -229,6 +254,57 @@ function getresponse(msg){
 //
 //
 
+</script>
+<script>
+    
+
+function nlpsend(){
+
+    //$('.result').text("");
+	//var inputs = '{ "ent":"ee" , "prob":"pp" , "message" :"' + msg + '"}'
+    //inputs = getFormData(".inputs");
+    var mmm = document.getElementById('nlp').value;
+	console.log(mmm);
+	var inputs = {};
+	inputs["msg"]=mmm;
+	
+    //jquery AJAX post
+    var url = "http://127.0.0.1:7000/nlp"
+    var data = JSON.stringify(inputs)
+	//console.log(data);
+	//serializes json into a string, opposite of parse
+    $.post( url, data, function( data ) {
+		
+        response = data['results'];
+		console.log(response);
+        //recvmsg(response);
+		//problem = data['results']['problem'];
+		//entity = data['results']['entity'];
+		//updside();
+		//alert(sec);
+		//console.log(response);
+		//$('.result').append(response)
+		nlprdis(response);
+        });
+	
+    
+}
+function nlprdis(res){
+
+	document.getElementById('nlprule').innerHTML ='<p>Parsed Query</p><strong>'+ res+'</strong>';
+}
+
+
+//function getFormData(form){
+//    var json={};
+//    var array = $(form).serializeArray();
+//    $.each(array, function(){
+//       json[this.name]=this.value || '';
+//    });
+//    return json;
+//}
+//
+//
 </script>
 <!--<script src="flask/js/jquery.js"></script>
 <script src="flask/js/bootstrap.min.js"></script>-->

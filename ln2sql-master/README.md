@@ -34,7 +34,6 @@ If you want a version using TreeTagger, a <a rel="wrapper" href="https://perso.l
 	- [X] one column
 	- [X] multiple columns
 	- [X] all columns
-	- [X] distinct select
 	- [X] aggregate functions
 		- [X] count-select
 		- [X] sum-select
@@ -55,7 +54,7 @@ If you want a version using TreeTagger, a <a rel="wrapper" href="https://perso.l
 		- [X] not equal operator
 		- [X] greater-than operator
 		- [X] less-than operator
-		- [X] like operator
+		- [X] LIKE operator
 		- [ ] between operator (not 100% efficient)
 	- [X] aggregate functions
 		- [X] sum in condition
@@ -66,8 +65,10 @@ If you want a version using TreeTagger, a <a rel="wrapper" href="https://perso.l
 	- [X] ASC
 	- [X] DESC
 - [X] GROUP BY
+- [X] alias
 - [X] multiple queries
 - [X] exception and error handling
+- [X] negation support
 - [ ] detection of values (not 100% efficient)
 
 ## How to use it?
@@ -106,8 +107,7 @@ You can improve the stop word filtering using a stop word list. You can build yo
 You can directly use the python wrapper by the following way:
 ```
 Usage:
-	From the cloned source:
-	python3 -m ln2sql.main -d <path> -l <path> -i <input-sentence> [-j <path>] [-t <path>] [-s <path>]
+	python ln2sql.py -d <path> -l <path> -i <input-sentence> [-t <path>] [-j <path>]
 Parameters:
 	-h					print this help message
 	-d <path>				path to sql dump file
@@ -115,16 +115,22 @@ Parameters:
 	-i <input-sentence>			input sentence to parse
 	-j <path>				path to JSON output file
 	-t <path>				path to thesaurus file
-	-s <path>				path to stopwords file
 ```
 example of usage:
+
 ```
-python3 -m ln2sql.main -d database_store/city.sql -l lang_store/english.csv -j output.json -i "Count how many city there are with the name blob?"
+python ln2sql.py -d database/city.sql -l lang/english.csv -j output.json -i "how many city there are in which the employee name is similar to aman ?"
 ```
+
+Values for WHERE clause should be specified in single(') or double(") quotes for multi word values.example :
+```
+python ln2sql.py -d database/city.sql -l lang/english.csv -j output.json -i "show data for city with cityName = 'San Jose'"
+```
+<p align="center"><img src="https://user-images.githubusercontent.com/11170508/32624509-80e01846-c5af-11e7-9d1b-eb8d4bba85e5.jpg" width="900"></p>
 
 or by graphical interface by typing the following command:
 ```
-python ln2sql/ln2sql_gui.py
+python ln2sql_gui.py
 ```
 a window like the one below will appear:
 <p align="center"><img src="https://raw.githubusercontent.com/FerreroJeremy/ln2sql/master/docs/graphical_user_interface.png" width="600"></p>
@@ -176,5 +182,3 @@ the output is:
 The tool is implemented under the Model-View-Controller pattern. The classes imported from the Python Standard Library do not appear in the diagram except those required for inheritance (<i>e.g.</i> <i>Thread</i> or <i>Exception</i>).
 <p align="center"><img src="https://raw.githubusercontent.com/FerreroJeremy/ln2sql/master/docs/mvc_class_diagram.png"></p>
 The above diagram was modeled with <a rel="staruml" href="http://staruml.io/">StarUML</a>.
-<br/>
-<br/>
