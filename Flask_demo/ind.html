@@ -24,7 +24,7 @@ border-radius( 5px );
 </head>
 <body style="height:100%;">
 <div class="row" style='height:97%;'>
-	<div class='col-6' style="height:100%; padding:0;">
+	<div class='col-7' style="height:100%; padding:0;">
 		<div class='col-12 text-center border-bottom' style="height:20%;">
 			<h1 >Query input</h1>
 			<form class=" text-center" action="/action_page.php" style="padding:15px;">
@@ -38,13 +38,27 @@ border-radius( 5px );
 			
 				<div class='col-6 border-right maincols'>
 					<h4 class="heads"><strong>Rule Based</strong></h4><hr>
-					<div class="col-10 offset-1 msgbox" id='nlprule'>
-						<p class="heads"><strong>Parsed Query</strong></p>
-					</div><hr>
+						<div class="col-10 offset-1 msgbox" id='nlprule'>
+							<p class="heads"><strong>Parsed Query</strong></p>
+						</div><hr>
 					<h5>Result</h5>
+					<div style="height:30%"></div>
+					<div><p>*semi-rule based nlp parser which can be used for most of the cases</p>
+						<p>*Accuray improves based on the volume of data available</p>
+					
+					</div>
 				</div>
 				<div class='col-6 maincols'>
 					<h4 class="heads"><strong>Graph</strong></h4><hr>
+						<div class="col-10 offset-1 msgbox" id='nlprule'>
+							<p class="heads"><strong>Parsed Query</strong></p>
+						</div><hr>
+						<h5>Result</h5>
+						<div style="height:30%"></div>
+					<div><p>* Graph based query parser in SPARQL</p>
+						<p>* Universal, but graph DB lascks scalability on larger databases</p>
+					
+					</div>
 				</div>
 		</div>
 		
@@ -64,7 +78,7 @@ border-radius( 5px );
 			
 			<hr>
 		
-		<button type="button" class="btn col-6 offset-3" name='add' id='add' onclick='add()'>Add Clause</button>
+		<button type="button" class="btn col-6 offset-3" name='add' id='add' onclick='add()'>Add Condition</button>
 		<p style='margin:15px;'> Where  </p>
 		<div name='clause' class='row' id='clause'>
 			
@@ -76,9 +90,78 @@ border-radius( 5px );
 		<div class="col-10 offset-1 msgbox text-center" style='margin-top:5px;height:20%' id='qmpq'>
 					<p class="heads"><strong>Parsed Query</strong></p>
 		</div>
+		<div style="height:5%"></div>
+		<div><p>* Easy Query maker for non technical people</p>
+			<p>* NLP is great but if you are unalble to get the required answer, This can be used as backup system</p>
+					
+		</div>
 	</div>
-	<div class='col-3 border-left text-center' style="height:100%; padding:0;">
-		<h4 class="heads">Misc</h4>
+	<div class='col-2 border-left text-center' style="height:100%; padding:0;">
+		<h4 class="heads">Misc</h4><hr>
+		<p>TAB1</p>
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+					<th scope="col">id</th>
+					<th scope="col">name</th>
+					<th scope="col">nickname</th>
+					<th scope="col">phone</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					<th scope="row">1</th>
+					<td>Mark</td>
+					<td>Otto</td>
+					<td>@mdo</td>
+					</tr>
+					<tr>
+					<th scope="row">2</th>
+					<td>Jacob</td>
+					<td>Thornton</td>
+					<td>@fat</td>
+					</tr>
+					<tr>
+					<th scope="row">3</th>
+					<td>Larry</td>
+					<td>the Bird</td>
+					<td>@twitter</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr>
+		<p>TAB2</p>
+				
+			<table class="table">
+				<thead class="thead-light">
+					<tr>
+					<th scope="col">#</th>
+					<th scope="col">payment</th>
+					<th scope="col">date</th>
+					<th scope="col">1id</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+					<th scope="row">1</th>
+					<td>Mark</td>
+					<td>Otto</td>
+					<td>@mdo</td>
+					</tr>
+					<tr>
+					<th scope="row">2</th>
+					<td>Jacob</td>
+					<td>Thornton</td>
+					<td>@fat</td>
+					</tr>
+					<tr>
+					<th scope="row">3</th>
+					<td>Larry</td>
+					<td>the Bird</td>
+					<td>@twitter</td>
+					</tr>
+				</tbody>
+			</table>
 		
 		
 		
@@ -188,8 +271,8 @@ $('.selectpicker').on('change', function(){
 			whe[i] = [mainval,relstr]; 
 		}
 		
-		//console.log(sel);
-		//console.log(whe);
+		console.log(sel);
+		console.log(whe);
 		getresponse(sel,whe);
 	}
 </script>

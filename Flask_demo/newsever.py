@@ -81,13 +81,13 @@ def make_predict():
 @cross_origin(origin='localhost')
 def nlp():
 
-    # get data, xform to a dict of  pandas series
+   
     data = request.get_json(force=True)
 
-    # this is just a silly example
-    sel = data['sel']
-    whe = data['whe']
-    msg = data['ent']
+  
+    sel = data['msg']
+    #whe = data['whe']
+    #msg = data['ent']
     tab1 = ['id', 'name', 'nickname', 'phone']
     tab2 = ['payment', 'date', '1id']         
             
